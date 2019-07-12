@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.fisher.project.system.wechat.mapper.WechatMenuMapper">
+	<resultMap type="WechatMenu" id="WechatMenuResult">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="content" column="content" />
+		<result property="url" column="url" />
+		<result property="menuKey" column="menu_key" />
+		<result property="pid" column="pid" />
+		<result property="type" column="type" />
+		<result property="respType" column="resp_type" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, name, content, url, menu_key, pid, type, resp_type
+	</sql>
+	
+	<select id="loadByKey" parameterType="string" resultType="WechatMenu">
+		select
+		<include refid="Base_Column_List"/> 
+		from sys_wechat_menu 
+		where 
+		menu_key=#{menuKey}
+	</select>
+	
+	<select id="selectMenuList">
+		select
+		<include refid="Base_Column_List"/> 
+		from sys_wechat_menu 
+		order by id
+	</select>
+	
+	<select id="load" parameterType="int" resultType="WechatMenu">
+		select
+		<include refid="Base_Column_List"/> 
+		from sys_wechat_menu 
+		where 
+		id=#{id}
+	</select>
+	
+	<insert id="add" parameterType="WechatMenu" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_wechat_menu (
+			id,
+			<if test="name != null and name != ''">name,</if>
+			<if test="content != null and content != ''">content,</if>
+			<if test="url != null and url != ''">url,</if>
+			<if test="menuKey != null and menuKey != ''">menu_key,</if>
+			<if test="pid != null and pid != 0">pid,</if>
+			<if test="type != null and type != ''">type,</if>
+			<if test="respType != null and respType != 0">resp_type</if>
+		) values (
+			#{id},
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="content != null and content != ''">#{content},</if>
+			<if test="url != null and url != ''">#{url},</if>
+			<if test="menuKey != null and menuKey != ''">#{menuKey},</if>
+			<if test="pid != null and pid != 0">#{pid},</if>
+			<if test="type != null and type != ''">#{type},</if>
+			<if test="respType != null and respType != 0">#{respType},</if>
+		)
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from sys_wechat_menu where id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="WechatMenu">
+		update sys_wechat_menu 
+		<set>
+			<if test="name != null and name != ''">name=#{name},</if>
+			<if test="content != null and content != ''">content=#{content},</if>
+			<if test="url != null and url != ''">url=#{url},</if>
+			<if test="menuKey != null and menuKey != ''">menu_key=#{menuKey},</if>
+			<if test="pid != null and pid != 0">pid=#{pid},</if>
+			<if test="type != null and type != ''">type=#{type},</if>
+			<if test="respType != null and respType != 0">resp_type=#{respType}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+</mapper>
