@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.fisher.project.system.wechat.mapper.WeatherMapper">
+
+	<sql id="Base_Column_List">
+		id, UploadTime, IMEI,  AirTemperature, AirHumidity, LeafTemp, PhotoEff, CO2, VSIC10, VSIC20, VSIC30, VSIC40,
+		SWC10, SWC20, SWC30, SWC40, ST10, ST20, ST30, ST40
+	</sql>
+	
+	<select id="queryHytList" resultType="Hyt">
+		select 
+		<include refid="Base_Column_List"/>
+		from 
+		hyt
+		where (DATEDIFF(d,UploadTime,GETDATE())=0)
+		order by UploadTime
+	</select>
+	
+	<select id="showHytLast" resultType="Hyt">
+		SELECT top 1 * FROM HYT  where IMEI=#{imei, jdbcType=VARCHAR}
+ 		order by UploadTime desc
+	</select>
+	
+	<select id="showHyt24" resultType="Hyt">
+ 		SELECT  * FROM HYT  where IMEI=#{imei, jdbcType=VARCHAR}
+		and <![CDATA[ DATEDIFF(hh, UploadTime, getDate()) < 24 ]]> 
+		 order by UploadTime
+	</select>
+	
+</mapper>
