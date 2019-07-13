@@ -17,6 +17,7 @@ public class WechatMuseumController extends BaseController {
      * 场馆概述
      * @return
      */
+    @RequestMapping("/intro")
     public String introVenue() {
         return "";
     }
@@ -25,6 +26,7 @@ public class WechatMuseumController extends BaseController {
      * 场馆导览
      * @return
      */
+    @RequestMapping("/guide")
     public String guideVenue() {
         return "";
     }
@@ -33,6 +35,7 @@ public class WechatMuseumController extends BaseController {
      * 展品介绍
      * @return
      */
+    @RequestMapping("/exhibit")
     public String introExhibit() {
         return "";
     }
@@ -41,6 +44,7 @@ public class WechatMuseumController extends BaseController {
      * 精彩瞬间
      * @return
      */
+    @RequestMapping("/moment")
     public String queryMoment() {
         return "";
     }

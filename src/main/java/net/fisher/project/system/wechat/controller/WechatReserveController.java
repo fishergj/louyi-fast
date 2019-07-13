@@ -13,6 +13,7 @@ public class WechatReserveController extends BaseController {
      * 参观预约
      * @return
      */
+    @RequestMapping("/")
     public String doReserve() {
         return "";
     }
@@ -21,6 +22,7 @@ public class WechatReserveController extends BaseController {
      * 预约查询
      * @return
      */
+    @RequestMapping("/query")
     public String checkReserve() {
         return "";
     }
@@ -29,6 +31,7 @@ public class WechatReserveController extends BaseController {
      * 一键导航
      * @return
      */
+    @RequestMapping("/navigate")
     public String navigate() {
         return "";
     }
@@ -37,6 +40,7 @@ public class WechatReserveController extends BaseController {
      * 留言建议
      * @return
      */
+    @RequestMapping("/recommend")
     public String recommend() {
         return "";
     }

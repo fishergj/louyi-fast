@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/wechat.css}" rel="stylesheet"/>
+    <title>天气实况</title>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <header class="sevenDay">
+                <div class="head" style="text-align:right;border-bottom:1px solid #fff;color:#FFF;font-size:12px">天气实况&nbsp;<span id="zdz_date"></span>&nbsp;更新</div>
+            </header>
+            <div class="sevenDay" style="width: 100%; margin: 0px;border: 0px; cellspacing:0px; cellpadding: 0px">
+                <div class="head2" style="text-align:left;color:#FFF"><span id="zdz_stationname"></span></div>
+                <div style="line-height:30px">
+                    <div style="text-align:left; line-height:100px;">
+                        <span id="zdz_temper" style= "font-size:80px; margin:30px"></span><span style="position: relative; top:-25px;font-size:40px">℃</span></div>
+                    <div style=" width:80%; margin-left:10px; margin-bottom:10px;align:center">
+                        <div style="text-align:left;"><img th:src="@{/img/weather/precipitation.png}" style="max-height:22px"/><span style="font-size:18px; margin:5px">&nbsp;&nbsp;<b>降雨量(分钟累计)&nbsp;&nbsp;<span id="zdz_one_rain"></span>&nbsp;mm</b></span></div>
+                        <div style="text-align:left;"><img th:src="@{/img/weather/humidity.png}" style="max-height:22px"/><span style="font-size:18px;margin:5px">&nbsp;&nbsp;<b>湿度&nbsp;&nbsp;<span id="zdz_rel_humi"></span>&nbsp;%</b></span></div>
+                        <div style="text-align:left;"><img th:src="@{/img/weather/wind.png}" style="max-height:22px"/><span style="font-size:18px;margin:5px">&nbsp;&nbsp;<b>瞬时风速&nbsp;&nbsp;<span id="zdz_instant_ws"></span>&nbsp;m/s</b></span></div>
+                        <div style="text-align:left;"><img th:src="@{/img/weather/wind.png}" style="max-height:22px"/><span style="font-size:18px;margin:5px">&nbsp;&nbsp;<b>气压&nbsp;&nbsp;<span id="zdz_air_press"></span>&nbsp;hPa</b></span></div>
+                    </div>
+                </div>
+                <div class="sevenDay" style="font-size:16px; text-align:left;  line-height:40px; border-bottom:1px solid #fff; border-top:1px solid #fff">
+                    <div style="float:right; margin-right:10px">24小时实况</div>
+                    <div style=" margin-left:10px; text-align: left"><span id="zdz_stationname_24"></span></div>
+                </div>
+                <div style="text-shadow:none;">
+                    <div id="zdzAll24" style="height:400px;"></div>
+                </div>
+                <div class="control-sidebar-bg"></div>
+            </div>
+        </div>
+    </div> <!-- ./wrapper -->
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/echarts/echarts.common.min.js}"></script>
+<!--    <script>-->
+<!--        var ctx = "[[@{/}]]";-->
+<!--    </script>-->
+    <script th:inline="javascript"> var ctx = '[[@{/}]]'; </script>
+
+    <script>
+        $(document).ready(function() {
+
+            $.ajax({ //[[@{/song/ajaxTest.action}]]
+                url : '/wechat/weather/showZdz',
+                type : 'get',
+                dataType : 'json',
+                success : function(result) {
+                    $("#zdz_stationname").html(result.stationname);
+                    $("#zdz_stationname_24").html(result.stationname);
+                    $("#zdz_date").html(result.date);
+                    $("#zdz_temper").html(result.temper);
+                    $("#zdz_rel_humi").html(result.rel_humi);
+                    $("#zdz_instant_ws").html(result.instant_ws);
+                    $("#zdz_one_rain").html(result.one_rain);
+                    $("#zdz_air_press").html(result.air_press);
+                },
+                error : function() {
+                    console.log("出错了");
+                }
+            });
+
+            $.ajax({
+                url : '/wechat/weather/showZdzAll24',
+                type : 'get',
+                dataType : 'json',
+                success : function(result) {
+                    showZdzAll24(result);
+                },
+                error : function() {
+                    console.log("出错了");
+                }
+            });
+        });
+
+        function showZdzAll24(zdzAll) {
+            var myChart = echarts.init(document.getElementById('zdzAll24'));
+            var label_x = [];
+            var temper = [];
+
+            $.each(zdzAll, function(index, item) {
+                label_x.push(zdzAll[index].date);
+                temper.push(zdzAll[index].temper);
+            });
+
+            option = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['温度']
+                },
+                calculable: true,
+                xAxis: [{
+                    type: 'category',
+                    boundaryGap: false,
+                    data: label_x
+                }],
+                yAxis: [{
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                }],
+                series: [
+                    {
+                        name: '温度',
+                        type: 'line',
+                        data: temper,
+                        markLine: {
+                            data: [
+                                { type: 'average', name: '平均值' }
+                            ]
+                        }
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+    </script>
+</body>
+</html>

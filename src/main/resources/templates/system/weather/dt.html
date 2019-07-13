@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/wechat.css}" rel="stylesheet"/>
+    <title>大田气象</title>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <div class="content-wrapper">
+        <header class="sevenDay">
+            <div class="head"
+                 style="text-align: right; border-bottom: 1px solid #fff; color: #FFF; font-size: 12px">
+                大田气象&nbsp;<span id="uploadTime"></span>&nbsp;更新
+            </div>
+        </header>
+        <div class="sevenDay"
+             style="width: 100%; margin: 0px; border: 0px; cellspacing: 0px; cellpadding: 0px">
+            <div style="line-height: 30px">
+                <div
+                        style="width: 210px; margin-left: 10px; margin-bottom: 10px; align: center">
+                    <div style="text-align: left;">
+                        <img th:src="@{/img/weather/precipitation.png}"
+                             style="max-height: 22px" /><span
+                            style="font-size: 18px; margin: 5px">&nbsp;&nbsp;<b>空气温度&nbsp;&nbsp;<span
+                            id="airTemperature"></span>&nbsp;℃</b></span>
+                    </div>
+                    <div style="text-align: left;">
+                        <img th:src="@{/img/weather/humidity.png}"
+                             style="max-height: 22px" /><span
+                            style="font-size: 18px; margin: 5px">&nbsp;&nbsp;<b>空气湿度&nbsp;&nbsp;<span
+                            id="airHumidity"></span>&nbsp;%</b></span>
+                    </div>
+                    <div style="text-align: left;">
+                        <img th:src="@{/img/weather/wind.png}"
+                             style="max-height: 22px" /><span
+                            style="font-size: 18px; margin: 5px">&nbsp;&nbsp;<b>叶面温度&nbsp;&nbsp;<span
+                            id="leafTemp"></span>&nbsp;℃
+					</b></span>
+                    </div>
+                    <div style="text-align: left;">
+                        <img th:src="@{/img/weather/wind.png}"
+                             style="max-height: 22px" /><span
+                            style="font-size: 18px; margin: 5px">&nbsp;&nbsp;<b>光合有效&nbsp;&nbsp;<span
+                            id="photoEff"></span>
+					</b></span>
+                    </div>
+                    <div style="text-align: left;">
+                        <img th:src="@{/img/weather/wind.png}"
+                             style="max-height: 22px" /><span
+                            style="font-size: 18px; margin: 5px">&nbsp;&nbsp;<b>二氧化碳&nbsp;&nbsp;<span
+                            id="co2"></span>
+					</b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" align="center" width="100%" style="border-color: white;">
+            <tr>
+                <th width="20%"></th>
+                <th style="font-size: 18px; font-weight: bold;" width="18%">10厘米</th>
+                <th style="font-size: 18px; font-weight: bold;" width="18%">20厘米</th>
+                <th style="font-size: 18px; font-weight: bold;" width="18%">30厘米</th>
+                <th style="font-size: 18px; font-weight: bold;" width="18%">40厘米</th>
+            </tr>
+            <tr>
+                <td width="20%"><span style="font-size: 18px; font-weight: bold;">盐分</span></td>
+                <td width="18%"><span id="vsic10"></span></td>
+                <td width="18%"><span id="vsic20"></span></td>
+                <td width="18%"><span id="vsic30"></span></td>
+                <td width="18%"><span id="vsic40"></span></td>
+            </tr>
+            <tr>
+                <td width="20%"><span style="font-size: 18px; font-weight: bold;">水分</span></td>
+                <td width="18%"><span id="swc10"></span></td>
+                <td width="18%"><span id="swc20"></span></td>
+                <td width="18%"><span id="swc30"></span></td>
+                <td width="18%"><span id="swc40"></span></td>
+            </tr>
+            <tr>
+                <td width="20%"><span style="font-size: 18px; font-weight: bold;">土温</span></td>
+                <td width="18%"><span id="st10"></span></td>
+                <td width="18%"><span id="st20"></span></td>
+                <td width="18%"><span id="st30"></span></td>
+                <td width="18%"><span id="st40"></span></td>
+            </tr>
+        </table>
+        <div style="float: right; margin-right: 10px">24小时实况</div>
+        <div style="text-shadow: none;">
+            <div id="hytDt24" style="height:400px;"></div>
+        </div>
+    </div>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+   immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/echarts/echarts.common.min.js}"></script>
+
+<script>
+    $(document).ready(
+        function () {
+            $.ajax({
+                url: '/wechat/weather/showHytDtLast',
+                type: 'get',
+                dataType: 'json',
+                success: function (result) {
+                    $("#uploadTime").html(result.uploadTime);
+                    $("#airTemperature").html(result.airTemperature);
+                    $("#airHumidity").html(result.airHumidity);
+                    $("#leafTemp").html(result.leafTemp);
+                    $("#photoEff").html(result.photoEff);
+                    $("#co2").html(result.co2);
+                    $("#vsic10").html(result.vsic10);
+                    $("#vsic20").html(result.vsic20);
+                    $("#vsic30").html(result.vsic30);
+                    $("#vsic40").html(result.vsic40);
+                    $("#swc10").html(result.swc10);
+                    $("#swc20").html(result.swc20);
+                    $("#swc30").html(result.swc30);
+                    $("#swc40").html(result.swc40);
+                    $("#st10").html(result.st10);
+                    $("#st20").html(result.st30);
+                    $("#st30").html(result.st30);
+                    $("#st40").html(result.st40);
+                },
+                error: function () {
+                    console.log("出错了");
+                }
+            });
+
+            $.ajax({
+                url: '/wechat/weather/showHytDt24',
+                type: 'get',
+                dataType: 'json',
+                success: function (result) {
+                    //alert(result);
+                    showHytDt24(result);
+                },
+                error: function () {
+                    console.log("出错了");
+                }
+            });
+
+        });
+
+    function showHytDt24(dtAll) {
+        var myChart = echarts.init(document.getElementById('hytDt24'));
+
+        var label_x = [];
+        var airTemperature = [];
+        var airHumidity = [];
+        var leafTemp = [];
+
+
+        $.each(dtAll, function (index, item) {
+            label_x.push(dtAll[index].uploadTime);
+            airTemperature.push(dtAll[index].airTemperature);
+            airHumidity.push(dtAll[index].airHumidity);
+            leafTemp.push(dtAll[index].leafTemp);
+        });
+
+        option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            color: ["#CCCC00", "#666666", "#FF0033"],
+            legend: {
+                data: ['空气温度', '叶面温度', '空气湿度']
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                data: label_x
+            }],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '空气湿度',
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '空气温度',
+                    type: 'line',
+                    data: airTemperature,
+                    lineStyle: {
+                        normal: {
+                            color: "#CCCC00"
+                        }
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name: '叶面温度',
+                    type: 'line',
+                    data: leafTemp,
+                    lineStyle: {
+                        normal: {
+                            color: "#666666"
+                        }
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name: '空气湿度',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: airHumidity,
+                    lineStyle: {
+                        normal: {
+                            color: "#FF0033"
+                        }
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
+</script>
+</body>
+</html>

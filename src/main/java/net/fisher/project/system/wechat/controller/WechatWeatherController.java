@@ -36,7 +36,7 @@ public class WechatWeatherController extends BaseController {
     SimpleDateFormat _sdf = new SimpleDateFormat("HH:mm");
     SimpleDateFormat _sdf_nq = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping(value="/zdz", method= RequestMethod.GET)
+    @GetMapping("/zdz")
     public String zdz() {
         return prefix + "/zdz";
     }
@@ -83,7 +83,7 @@ public class WechatWeatherController extends BaseController {
      */
     @GetMapping("/dt")
     public String dt() {
-        return prefix + "/hyt_dt";
+        return prefix + "/dt";
     }
 
     @GetMapping("/showHytDtLast")
@@ -112,7 +112,7 @@ public class WechatWeatherController extends BaseController {
      */
     @GetMapping("/xp")
     public String xp() {
-        return prefix + "/hyt_xp";
+        return prefix + "/xp";
     }
 
     @GetMapping("/showHytXpLast")
@@ -141,7 +141,7 @@ public class WechatWeatherController extends BaseController {
      */
     @GetMapping("/dp")
     public String dp() {
-        return prefix + "/hyt_dp";
+        return prefix + "/dp";
     }
 
     @GetMapping("/showHytDpLast")
@@ -170,7 +170,7 @@ public class WechatWeatherController extends BaseController {
      */
     @GetMapping("/scy")
     public String scy() {
-        return prefix + "/hyt_scy";
+        return prefix + "/scy";
     }
 
     @GetMapping("/showHytScyLast")

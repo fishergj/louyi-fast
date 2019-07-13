@@ -1,0 +1,29 @@
+body>div,header{
+    background:rgba(0,0,0,0.1);
+}
+
+#background_wrap {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: auto;
+    width: auto;
+    background-size: cover;
+    background-image: url(../img/weather/background/1.jpg);
+    /*background:url(../img/weather/background/1.jpg) no-repeat center fixed;*/
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.wrapper {
+    position: relative;
+    z-index: 1;
+    height: auto;
+    width: auto;
+    overflow: hidden;
+    -ms-touch-action: none;
+    background-size: cover;
+    background-image: url(../img/weather/background/1.jpg);
+}

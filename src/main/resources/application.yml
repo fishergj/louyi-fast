@@ -13,7 +13,7 @@ louyi:
 
 server:
   #服务端口
-  port: 8089
+  port: 8080
   servlet:
     #项目contextPath
     context-path: /
@@ -58,10 +58,10 @@ spring:
       enabled: true  
   
   datasource:
-    druid: 
+    druid:
 #      url: jdbc:mysql://localhost:3306/louyi-fast?useUnicode=true&characterEncoding=utf-8&useSSL=false
 #      username: root
-#      password: 
+#      password:
 #      driver-class-name: com.mysql.jdbc.Driver
 #      platform: mysql
       type: com.alibaba.druid.pool.DruidDataSource
@@ -179,7 +179,7 @@ spring:
           #password: ENC(S5ZxnKJJr2k8CtAJCh4dKyKVKkAtMcqG)
           password: xiaoxiao
           driverClassName: com.mysql.jdbc.Driver
-        slave: 
+        slave:
           # 从数据库开关/默认关闭
           enabled: true
           url: jdbc:sqlserver://61.152.122.117:1433;databasename=ScreenData80JD
