@@ -5,7 +5,7 @@ louyi:
   # 版本
   version: 0.0.1-SNAPSHOT
   # 版权年份
-  copyrightYear: 2018
+  copyrightYear: 2019
   # 文件上传路径
   profile: /tmp/louyi/profile/
   # 获取ip地址开关
@@ -13,7 +13,7 @@ louyi:
 
 server:
   #服务端口
-  port: 8080
+  port: 8090
   servlet:
     #项目contextPath
     context-path: /
@@ -174,10 +174,10 @@ spring:
     datasource:
       druid: 
         master: 
-          url: jdbc:mysql://127.0.0.1:3306/ry?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          url: jdbc:mysql://127.0.0.1:3306/ry?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
           username: root
           #password: ENC(S5ZxnKJJr2k8CtAJCh4dKyKVKkAtMcqG)
-          password: xiaoxiao
+          password: Order@123
           driverClassName: com.mysql.jdbc.Driver
         slave:
           # 从数据库开关/默认关闭

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.fisher.project.venue.introduce.mapper.IntroduceMapper">
+
+    <sql id="selectVenueIntroVo">
+        select 
+        	id,title,img_url,CONVERT(content USING utf8) as content,sort,create_time,update_time,venueId,introduceType        
+		from t_venue_intro 
+    </sql>
+    
+    <select id="selectVenueIntroById" parameterType="Long" resultType="VenueIntro">
+        <include refid="selectVenueIntroVo"/>
+        where Id = #{venueIntroId}
+    </select>
+    
+    <select id="selectVenueIntroList" parameterType="VenueIntro" resultType="VenueIntro">
+       select 
+        	a.id
+        	,a.title
+        	,a.img_url
+        	,CONVERT(a.content USING utf8) as content
+        	,a.sort
+        	,a.create_time
+        	,a.update_time
+        	,a.venueId
+        	,b.name as venueName
+        	,a.introduceType        
+		from t_venue_intro a 
+		left join t_venue b
+		on a.venueId = b.id
+        <where>
+			<if test="title != null and title != ''">
+				AND title like concat('%', #{title}, '%')
+			</if>
+			<if test="introduceType != null and introduceType !=0">
+				AND introduceType = #{introduceType}
+			</if>
+		</where>
+    </select>
+    
+    <insert id="insertVenueIntro" parameterType="VenueIntro">
+        insert into t_venue_intro (
+			title,
+			img_url,
+			content,
+			sort,
+			venueId,
+			introduceType,
+			create_time,
+			update_time			
+ 		)values(
+			#{title},
+			#{img_url},
+			#{content},
+			#{sort},
+			#{venueId},
+			#{introduceType},
+ 			sysdate(),
+ 			sysdate()
+		)
+    </insert>
+	 
+    <update id="updateVenueIntro" parameterType="VenueIntro">
+        update t_venue_intro 
+        <set>
+            title= #{title},
+			img_url= #{img_url},
+			content= #{content},
+			sort= #{sort},
+			venueId= #{venueId},
+			venueId= #{venueId},
+ 			update_time = sysdate()
+        </set>
+         where Id = #{id}
+    </update>
+	
+    <delete id="deleteVenueIntroByIds" parameterType="String">
+        delete from t_venue_intro where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

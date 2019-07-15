@@ -71,7 +71,7 @@ public class WechatWeatherController extends BaseController {
         }
         for (int i = 0; i < zdzList.size(); i++) {
             Zdz zdz = zdzList.get(i);
-            zdz.setDate(_sdf.format(sdf.parse(zdz.getDate())));
+           // zdz.setDate(_sdf.format(sdf.parse(zdz.getDate())));
         }
         return zdzList;
     }
