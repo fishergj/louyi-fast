@@ -182,6 +182,19 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
 	}
+	
+	 /**
+     * 获取当天时间  
+     *
+     * @param dateformat
+     * @return
+     */
+    public static String getNowTime(String dateformat) {
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateformat);// 可以方便地修改日期格式   
+        String hehe = dateFormat.format(now);
+        return hehe;
+    }
 
 	/**
 	 * 格式化明天时间日期

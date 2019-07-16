@@ -1,5 +1,6 @@
 package net.fisher.project.venue.order.service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,7 +57,13 @@ public class SubscribeDetailServiceImpl implements ISubscribeDetailService{
 		{
 			venueId = venues.get(0).getId();
 		}
-		Date currentdt = new Date();
+		Date currentdt = null;
+		try {
+			currentdt = DateUtil.parse(DateUtil.getNowTime("yyyy-MM-dd"), "yyyy-MM-dd");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(int i=0;i<Integer.valueOf(maxDay);i++){		
 			int weekDay = TimeUtil.getWeekIntOfDate(currentdt);
 			if(groupBy.containsKey(weekDay)){
@@ -83,7 +90,11 @@ public class SubscribeDetailServiceImpl implements ISubscribeDetailService{
 			// 获取下一天
 			currentdt = DateUtil.getNextDay(currentdt,1);
 		}	
-		subscribeDetailMapper.insertBatchDetails(details);
+		if(details.size() > 0){
+			
+			subscribeDetailMapper.insertBatchDetails(details);
+		}
+	
 		return;
 	}
 }

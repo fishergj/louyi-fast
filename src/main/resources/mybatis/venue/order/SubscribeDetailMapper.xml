@@ -34,9 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) values	   
 	  	<foreach collection="list" item="detailItem" separator=",">
 		(
-			#{detailItem.subscribeDate}
-			,#{detailItem.subscribeFromDt}
-			,#{detailItem.subscribeToDt}
+			#{detailItem.subscribeDate,jdbcType=TIMESTAMP}
+			,#{detailItem.subscribeFromDt,jdbcType=TIMESTAMP}
+			,#{detailItem.subscribeToDt,jdbcType=TIMESTAMP}
 			,#{detailItem.enabled}
 			,sysdate()
 			,sysdate()
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  <select id="isOrderTimeExist" parameterType="Map" resultType="int">
          select count(1)
          from t_subscribe_detail
-         where subscribeDate = #{ubscribeDate}
-         and subscribeFromDt = #{subscribeFromDt}
+         where subscribeDate = #{subscribeDate,jdbcType=TIMESTAMP}
+         and subscribeFromDt = #{subscribeFromDt,jdbcType=TIMESTAMP}
     	</select>
 </mapper>
