@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.fisher.project.venue.order.mapper.SubscribeDetailMapper">
+    <sql id="selectSubscribeDeatailVo">
+		 select 
+        	id
+			,weekDay
+			,subscribeDate
+			,subscribeFromDt
+			,subscribeToDt
+			,typeTeam
+			,typePerson
+			,venueId
+			,create_time
+			,update_time
+		from t_subscribe_detail
+    </sql>
+      
+    <!--预约时间段明细插入-->
+	<insert id="insertBatchDetails" parameterType="SubscribeDetail" >
+	    insert into t_subscribe_detail (
+			subscribeDate
+			,subscribeFromDt
+			,subscribeToDt
+			,enabled
+			,create_time
+			,update_time
+			,typeTeam
+			,typePerson
+			,venueId
+			,weekDay
+		) values	   
+	  	<foreach collection="list" item="detailItem" separator=",">
+		(
+			#{detailItem.subscribeDate}
+			,#{detailItem.subscribeFromDt}
+			,#{detailItem.subscribeToDt}
+			,#{detailItem.enabled}
+			,sysdate()
+			,sysdate()
+			,#{detailItem.typeTeam}
+			,#{detailItem.typePerson}
+			,#{detailItem.venueId}
+			,#{detailItem.weekDay}
+		)
+		</foreach>	
+	  </insert>
+	  
+	  <select id="isOrderTimeExist" parameterType="Map" resultType="int">
+         select count(1)
+         from t_subscribe_detail
+         where subscribeDate = #{ubscribeDate}
+         and subscribeFromDt = #{subscribeFromDt}
+    	</select>
+</mapper>
