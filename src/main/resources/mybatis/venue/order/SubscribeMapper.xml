@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.fisher.project.venue.order.mapper.SubscribeMapper">
+    <sql id="selectSubscribeVo">
+        select 
+        	id
+			,weekDay
+			,fromDt
+			,toDt
+			,typeTeam
+			,typePerson
+			,venueId
+			,create_time
+			,update_time  
+		from t_subscribe
+    </sql>
+      
+    <select id="selectAllSubscribes" resultType="Subscribe">
+        <include refid="selectSubscribeVo"/>
+        order by weekDay,fromDt
+    </select>
+</mapper>
