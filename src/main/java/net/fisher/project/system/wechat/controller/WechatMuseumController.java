@@ -19,7 +19,7 @@ public class WechatMuseumController extends BaseController {
      */
     @RequestMapping("/intro")
     public String introVenue() {
-        return "";
+        return prefix + "/intro";
     }
 
     /**
